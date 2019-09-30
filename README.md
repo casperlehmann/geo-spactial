@@ -16,11 +16,20 @@ https://github.com/docker/for-win/issues/1804
 ```
 
 ## Tests
+```
 >>> requests.post('http://localhost:5000/geo_code', {'address': "New York City"}).json()
+
 {'latlng': [40.7127281, -74.0060152]}
+```
 
+```
 >>> requests.post('http://localhost:5000/geo_code', {'address': ""}).json()
-{'Error': 'No valid request received. Pass parameters as form- or URL-parameters.'}
 
+{'Error': 'No valid request received. Pass parameters as form- or URL-parameters.'}
+```
+
+```
 >>> requests.post('http://localhost:5000/geo_code', {"latlng":"[40.7127281,-74.0060152]"}).json()
+
 {'address': 'New York City Hall, 260, Broadway, Civic Center, Manhattan Community Board 1, Manhattan, New York County, NYC, New York, 10000, USA'}
+```
