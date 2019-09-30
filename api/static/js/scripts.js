@@ -6,7 +6,7 @@ function make_request() {
   FD.append('lng', document.getElementById('lng').value);
 
   XHR.addEventListener('load', function(event) {
-    document.getElementById('response').value = event.currentTarget.response;
+    document.getElementById('response').value = JSON.stringify(JSON.parse(event.currentTarget.response));
   });
   XHR.addEventListener('error', function(event) {
     document.getElementById('response').value = 'Error.';
