@@ -27,8 +27,8 @@ https://github.com/docker/for-win/issues/1804
 ```
 
 ```
->>> requests.post('http://localhost:5000/geo_code', {'latlng':'[40.7127281,-74.0060152]'}).json()
-{'address': 'New York City Hall, 260, Broadway, Civic Center, Manhattan Community Board 1, Manhattan, New York County, NYC, New York, 10000, USA'}
+>>> requests.post('http://localhost:5000/geo_code', {'latlng': "[39.906217,116.3912757]"}).json()
+{'address': '东长安街, 崇文, 北京市, 东城区, 北京市, 100010, 中国'}
 ```
 
 ```
