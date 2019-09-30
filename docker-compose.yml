@@ -1,9 +1,29 @@
-version: '3'
+version: '3.7'
 
 services:
-  app:
-    build: ./app
-    volumes:
-      - ./app:/app
+  api:
+    environment:
+      PYTHONUNBUFFERED: 1
+      LOGLEVEL: INFO
+    build:
+      context: ./api
+      dockerfile: Dockerfile
     ports:
-      - 5001:80
+      - 5000:5000
+    container_name: api
+  worker:
+    environment:
+      PYTHONUNBUFFERED: 1
+      LOGLEVEL: INFO
+    build:
+      context: ./worker
+      dockerfile: Dockerfile
+    ports:
+      - 5001:5000
+    container_name: worker
+  redis:
+    image: 'redis:5.0.6-alpine'
+    container_name: redisinstance
+    command: redis-server
+    ports:
+      - '6379:6379'
