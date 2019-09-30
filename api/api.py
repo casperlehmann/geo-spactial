@@ -13,9 +13,17 @@ app.redis = Redis(host='redis', decode_responses = True)
 async def geo_code():
     form = await request.form
     address = request.args.get('address') or form.get('address')
-    logging.info(f'Pushed {address} onto queue')
-    app.redis.rpush('queue', json.dumps({'address': address}))
-    return {'message': 'I come in peace'}
+    pubsub = app.redis.pubsub()
+    if address:
+        app.redis.rpush('queue', json.dumps({'address': address}))
+        logging.info(f'Pushed {address} onto queue')
+        pubsub.subscribe('response:'+address)
+    else:
+        return {'Error': 'No valid request received. Pass parameters as form- or URL-parameters.'}
+    for item in filter(lambda payload: payload.get('type') == 'message', pubsub.listen()):
+        data = json.loads(item['data'])['response']
+        logging.info(f'Returning {data} to client')
+        return {'response': data}
 
 @app.route('/', methods=['GET'])
 def get_index_page():

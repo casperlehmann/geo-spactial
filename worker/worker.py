@@ -13,15 +13,17 @@ def consumer(redis, queues = None):
         consume(redis, queues)
 
 def consume(redis, queues):
-
     popped = redis.blpop(queues)
     if popped is None:
         return
     payload = json.loads(popped[1])
     address = payload.get('address')
     logging.info(f'Popped {address} off of the queue')
+    if address:
+        g = geocoder.osm(address)
+        logging.info(f'Publishing {[g.lat, g.lng]}')
+        redis.publish('response:'+address, json.dumps({'response': [g.lat, g.lng]}))
 
 if __name__ == '__main__':
     redis = Redis(host='redis', decode_responses=True)
     consumer(redis)
-
