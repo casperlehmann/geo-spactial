@@ -3,10 +3,16 @@
 <h1>Please enter address or GPS coordinates</h1>
 
 <p>Address</p>
-<textarea id='address' name="address">New York City</textarea>
+<textarea id='address' name="address" style="width:500px;height:30px">New York City</textarea>
+<p>Latitute</p>
+<textarea id='lat' name="lat" style="width:500px;height:30px"></textarea>
+<p>Longitute</p>
+<textarea id='lng' name="lng" style="width:500px;height:30px"></textarea>
+
 <br>
-<button onclick="make_request()">Go</button>
+<button style="width:100px;height:60px;margin-top:10px;margin-bottom:10px;" onclick="make_request()">Go</button>
 <br>
 <textarea id='response' readonly='true' style="width:500px;height:60px;margin-top:10px;margin-bottom:10px;"></textarea>
+<br>
 
 {% endblock %}

@@ -15,7 +15,6 @@ async def geo_code():
     address = request.args.get('address') or form.get('address')
     latlng = request.args.get('latlng') or form.get('latlng')
     lat, lng = request.args.get('lat') or form.get('lat'), request.args.get('lng') or form.get('lng')
-
     pubsub = app.redis.pubsub()
     if address:
         app.redis.rpush('queue', json.dumps({'address': address}))
