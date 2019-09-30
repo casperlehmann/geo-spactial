@@ -10,9 +10,13 @@
 <textarea id='lng' name="lng" style="width:500px;height:30px"></textarea>
 
 <br>
-<button style="width:100px;height:60px;margin-top:10px;margin-bottom:10px;" onclick="make_request()">Go</button>
+<button style="width:100px;height:60px;margin-left:200px;margin-right:200px;margin-top:10px;margin-bottom:10px;" onclick="make_request()">Go</button>
 <br>
 <textarea id='response' readonly='true' style="width:500px;height:60px;margin-top:10px;margin-bottom:10px;"></textarea>
 <br>
+<div style="width:500px;height:60px;display:inline;margin:10px;">
+    <button style="width:100px;height:60px;margin-left:74px;margin-right:74px;" onclick="clear_fields()">Clear</button>
+    <button style="width:100px;height:60px;margin-left:74px;margin-right:74px;" onclick="example()">Example</button>
+</div>
 
 {% endblock %}
