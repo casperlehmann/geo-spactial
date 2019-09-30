@@ -2,7 +2,7 @@ import json
 import logging
 import os
 from redis import Redis
-from quart import Quart, request
+from quart import Quart, request, render_template, redirect
 
 logging.basicConfig(level=os.environ.get("LOGLEVEL", "INFO"))
 
@@ -16,6 +16,15 @@ async def geo_code():
     logging.info(f'Pushed {address} onto queue')
     app.redis.rpush('queue', json.dumps({'address': address}))
     return {'message': 'I come in peace'}
+
+@app.route('/', methods=['GET'])
+def get_index_page():
+    """Redirect to the orders page"""
+    return redirect('/index')
+
+@app.route('/index', methods=['GET'])
+async def page():
+    return await render_template('/index.html')
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
