@@ -30,3 +30,18 @@ https://github.com/docker/for-win/issues/1804
 >>> requests.post('http://localhost:5000/geo_code', {'latlng':'[40.7127281,-74.0060152]'}).json()
 {'address': 'New York City Hall, 260, Broadway, Civic Center, Manhattan Community Board 1, Manhattan, New York County, NYC, New York, 10000, USA'}
 ```
+
+```
+>>> requests.post('http://localhost:5000/geo_code', {'lat':'[40.7127281]', 'lng':'[-74.0060152]'}).json()
+{'address': 'New York City Hall, 260, Broadway, Civic Center, Manhattan Community Board 1, Manhattan, New York County, NYC, New York, 10000, USA'}
+```
+
+```
+>>> requests.post('http://localhost:5000/geo_code', {'lat':'[40.7127281]'}).json()
+{'Error': 'Both lat and lng must be set'}
+```
+
+```
+>>> requests.post('http://localhost:5000/geo_code', {'lng':'[-74.0060152]'}).json()
+{'Error': 'Both lat and lng must be set'}
+```

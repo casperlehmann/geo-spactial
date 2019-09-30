@@ -14,6 +14,7 @@ async def geo_code():
     form = await request.form
     address = request.args.get('address') or form.get('address')
     latlng = request.args.get('latlng') or form.get('latlng')
+    lat, lng = request.args.get('lat') or form.get('lat'), request.args.get('lng') or form.get('lng')
 
     pubsub = app.redis.pubsub()
     if address:
@@ -22,6 +23,14 @@ async def geo_code():
         pubsub.subscribe('response:'+address)
         label = 'latlng'
     elif latlng:
+        app.redis.rpush('queue', json.dumps({'latlng': latlng}))
+        logging.info(f'Pushed {latlng} onto queue')
+        pubsub.subscribe('response:'+latlng)
+        label = 'address'
+    elif lat or lng:
+        if not (lat and lng):
+            return {'Error': 'Both lat and lng must be set'}
+        latlng = json.dumps([lat, lng])
         app.redis.rpush('queue', json.dumps({'latlng': latlng}))
         logging.info(f'Pushed {latlng} onto queue')
         pubsub.subscribe('response:'+latlng)
