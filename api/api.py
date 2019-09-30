@@ -11,6 +11,16 @@ app.redis = Redis(host='redis', decode_responses = True)
 
 @app.route('/geo_code', methods=['POST'])
 async def geo_code():
+    """Endpoint for translating address to coordinates or reverse.
+
+    Pass either an address to get back pair of latitute and longitute
+    or pass pair of latitute and longitute to get back an address. Using
+    open street map data.
+    Arguments are passed as url parameters or as part of the POST request.
+    Coordinates can be passed individually as lat and lng respectively
+    or as a json-encoded list, i.e. latlng=[51.1576661,1.4458572].
+    Priorities for arguments are: address, latlng, lat & lng.
+    """
     form = await request.form
     address = request.args.get('address') or form.get('address')
     latlng = request.args.get('latlng') or form.get('latlng')
