@@ -18,11 +18,19 @@ def consume(redis, queues):
         return
     payload = json.loads(popped[1])
     address = payload.get('address')
-    logging.info(f'Popped {address} off of the queue')
+    latlng = payload.get('latlng')
+
+    logging.info(f'Popped {address or latlng} off of the queue')
     if address:
         g = geocoder.osm(address)
         logging.info(f'Publishing {[g.lat, g.lng]}')
         redis.publish('response:'+address, json.dumps({'response': [g.lat, g.lng]}))
+    elif latlng:
+        r = geocoder.osm(latlng, method='reverse')
+        logging.info(f'Publishing {[r.address]}')
+        redis.publish(
+            'response:'+latlng,
+            json.dumps({'response': r.address}))
 
 if __name__ == '__main__':
     redis = Redis(host='redis', decode_responses=True)
