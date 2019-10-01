@@ -38,14 +38,14 @@ async def geo_code():
         label = 'address'
     elif lat or lng:
         if not (lat and lng):
-            return {'Error': 'Both lat and lng must be set'}
+            return {'Error': 'Both lat and lng must be set'}, 400
         latlng = json.dumps([lat, lng])
         app.redis.rpush('queue', json.dumps({'latlng': latlng}))
         logging.info(f'Pushed {latlng} onto queue')
         pubsub.subscribe('response:'+latlng)
         label = 'address'
     else:
-        return {'Error': 'No valid request received. Pass parameters as form- or URL-parameters.'}
+        return {'Error': 'No valid request received. Pass parameters as form- or URL-parameters.'}, 400
     for item in filter(lambda payload: payload.get('type') == 'message', pubsub.listen()):
         data = json.loads(item['data'])['response']
         logging.info(f'Returning {data} to client')
