@@ -10,9 +10,9 @@ def consumer(redis, queues = None):
     if queues is None:
         queues = ['queue']
     while True:
-        consume(redis, queues)
+        consume(redis, queues, geocoder.osm)
 
-def consume(redis, queues):
+def consume(redis, queues, open_street_map):
     popped = redis.blpop(queues)
     if popped is None:
         return
@@ -22,11 +22,11 @@ def consume(redis, queues):
 
     logging.info(f'Popped {address or latlng} off of the queue')
     if address:
-        g = geocoder.osm(address)
+        g = open_street_map(address)
         logging.info(f'Publishing {[g.lat, g.lng]}')
         redis.publish('response:'+address, json.dumps({'response': [g.lat, g.lng]}))
     elif latlng:
-        r = geocoder.osm(latlng, method='reverse')
+        r = open_street_map(latlng, method='reverse')
         logging.info(f'Publishing {[r.address]}')
         redis.publish(
             'response:'+latlng,
