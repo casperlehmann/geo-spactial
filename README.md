@@ -1,21 +1,57 @@
 # Geo-spatial demo
+Web-service frontend for geospatial transcoding via Open Street Map.
 
+## Quickstart
 ```
 docker-compose up --build
 ```
+Access demo front-end at [localhost:5000](localhost:5000)
 
-api hosted on localhost:5000
-
-redis running on localhost:6379
-
-worker running on localhost:5001
-
+## Make commands
+Install testing framework:
 ```
-Notice: Issues whis running on Windows.
-https://github.com/docker/for-win/issues/1804
+make install
 ```
 
-## Tests
+Run pytest:
+```
+make unittest
+```
+
+Run pytest with coverage:
+```
+make coverage
+```
+
+Run app with docker-compose:
+```
+make dcup
+```
+
+## To-do
+- [ ] Run unit-tests in container
+- [ ] End-to-end integration tests
+- [ ] To run in production switch away from Quart development server: https://pgjones.gitlab.io/quart/deployment.html
+- [ ] Issues running on Windows: https://github.com/docker/for-win/issues/1804
+
+## Run unittests
+```
+$ pytest --cov-report=term --cov-report=html --cov=api --cov=worker --cov-config=.coveragerc tests/tests.py
+---------- coverage: platform darwin, python 3.7.2-final-0 -----------
+Name               Stmts   Miss  Cover
+--------------------------------------
+api/api.py            41      0   100%
+worker/worker.py      27      5    81%
+--------------------------------------
+TOTAL                 68      5    93%
+```
+
+## Manual tests
+First, install requests:
+```
+pip install requests
+```
+
 ```
 >>> requests.post('http://localhost:5000/geo_code', {'address': 'New York City'}).json()
 {'latlng': [40.7127281, -74.0060152]}
