@@ -29,6 +29,7 @@ make dcup
 ```
 
 ## To-do
+- [ ] More fine grained **server-side error handling of user input** before enqueuing request for the worker process.
 - [ ] Run unit-tests in container
 - [ ] End-to-end integration tests
 - [ ] To run in production switch away from Quart development server: https://pgjones.gitlab.io/quart/deployment.html
