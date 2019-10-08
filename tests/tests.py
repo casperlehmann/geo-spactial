@@ -1,6 +1,11 @@
 import pytest
 import fakeredis
 import json
+
+import os
+import sys
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
 from api.api import app
 from worker.worker import consume
 
